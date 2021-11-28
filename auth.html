@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Desk</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/mustache@latest"></script>
+    <script src="./lib.js"></script>
+    <script src="./auth.js"></script>
+    <script src="./views.js"></script>
+</head>
+<body>
+    <div class="w-full" id="header"></div>
+    
+    <div id="errors" class="container">
+    </div>
+
+    <div id="app" class="container mx-auto mt-4">
+    </div>
+
+    <script id="template-login" type="x-tmpl-mustache">
+        <div class="p-4 bg-blue-200 rounded">
+            <form id="login" class="flex flex-col gap-4">
+                <label>
+                    <span class="text-lg font-bold">Email</span>
+                    <input name="email" class="w-full px-4 py-2 rounded" type="text" placeholder="first.last@gmail.com">
+                </label>
+                <label>
+                    <span class="text-lg font-bold">Password</span>
+                    <input name="password" class="w-full px-4 py-2 rounded" type="password">
+                </label>
+                <input class="bg-green-400 rounded font-bold p-4 cursor-pointer" type="submit" value="Log In">
+            </form>
+            <div class="text-center mt-4"><a href="#" class="underline" id="switch-to-register">or register a new account</a></div>
+        </div>        
+    </script>
+
+
+    <script id="template-register" type="x-tmpl-mustache">
+        <div class="container mx-auto p-4 bg-blue-200 rounded">
+            <form id="register" class="flex flex-col gap-4">
+                <label>
+                    <span class="text-lg font-bold">Full Name</span>
+                    <input name="name" class="w-full px-4 py-2 rounded" type="text" placeholder="Full Name" autocomplete="name">
+                </label>
+                <label>
+                    <span class="text-lg font-bold">Email</span>
+                    <input name="email" class="w-full px-4 py-2 rounded" type="text" placeholder="first.last@gmail.com">
+                </label>
+                <label>
+                    <span class="text-lg font-bold">Password</span>
+                    <input name="password" class="w-full px-4 py-2 rounded" type="password">
+                </label>
+                <input class="bg-green-400 rounded font-bold p-4 cursor-pointer" type="submit" value="Create Account">
+            </form>
+            <div class="text-center mt-4"><a href="#" class="underline" id="switch-to-login">or login</a></div>
+        </div>        
+    </script>
+
+    <script>
+        const currentUserEmail = localStorage.getItem(LS_CURRENT_USER_EMAIL);
+        if (currentUserEmail) {
+            window.location = '/tickets.html';
+        } else {
+            renderHeader({loggedIn: false});
+            viewLogin();
+        }
+    </script>
+</body>
+</html>
