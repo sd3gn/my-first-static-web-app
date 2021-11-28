@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Helpdesk</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/mustache@latest"></script>
+    <script src="./lib.js"></script>
+    <script src="./views.js"></script>
+</head>
+<body class="bg-gray-700 text-gray-200">
+    <div class="w-full relative">
+        <img class=" w-full" src="/images/home.jpg">
+        <div class="absolute bottom-0 left-0 w-full">
+            <div class="mx-auto text-center" style="margin-bottom: 25%;">
+                <h1 class="text-6xl text-white font-bold">Simple Helpdesk</h1>
+                <h2 class="text-3xl text-gray-200">Let IT fix it</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute top-0 w-full" id="header"></div>
+    <div class="mt-8 container mx-auto">
+        <h1 class="text-4xl font-bold border-b-4 border-red-400">Features</h1>
+        <div class="mt-6">
+            <h2 class="text-2xl font-semibold">Create Tickets</h2>
+            <p>Simple Helpdesk lets you quickly create your ticket and get back to more interesting work.</p>
+        </div>
+        <div class="mt-6">
+            <h2 class="text-2xl font-semibold">Retain your Sanity</h2>
+            <p>Your business faces many challenges, don't let a confusing and an overly complicated ticking system add to that. Keep it simple with Simple Helpdesk.</p>
+        </div>
+        
+        <h1 class="mt-6 text-4xl font-bold border-b-4 border-red-400">How To Get Started</h1>
+        <ol class="list-decimal ml-12 text-2xl">
+            <li>Create your account</li>
+            <li>Open a ticket</li>
+            <li>Our techs will follow-up with you shortly</li>
+        </ol>
+    </div>
+    
+    <script>
+        const LS_CURRENT_USER_EMAIL = 'currentUserEmail'
+        const LS_EMAIL_PREFIX = 'email:'
+
+        const currentUserEmail = localStorage.getItem(LS_CURRENT_USER_EMAIL);
+
+        renderHeader({loggedIn: !!currentUserEmail});
+    </script>
+</body>
+</html>

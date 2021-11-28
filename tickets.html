@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Desk</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/mustache@latest"></script>
+    <script src="./lib.js"></script>
+    <script src="./tickets.js"></script>
+    <script src="./views.js"></script>
+</head>
+<body>
+    <div class="w-full" id="header"></div>
+    
+    <div id="errors">
+    </div>
+
+    <div id="app" class="container mx-auto mt-4">
+    </div>
+
+    <script id="template-tickets" type="x-tmpl-mustache">
+        <div class="">
+            <div class="flex justify-between">
+                <h1 class="font-bold text-xl">Hello {{ user.name }}</h1>
+            </div>
+            <table class="w-full">
+                <thead>
+                    <tr class="bg-red-100 capitalize">
+                        {{#ticketHeader}}
+                        <th>{{.}}</th>
+                        {{/ticketHeader}}
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ticket-rows">
+                    {{#ticketRows}}
+                    <tr id="ticket-row-{{ticketIdx}}">
+                        {{#headerFields}}<td class="py-2">{{.}}</td>{{/headerFields}}
+                        <td class="py-2 flex justify-around">
+                            <button class="ticket underline text-blue-800 hover:text-blue-700" data-ticket-idx="{{ticketIdx}}" data-action="details">Details</button>
+                            <button class="ticket underline text-blue-800 hover:text-blue-700" data-ticket-idx="{{ticketIdx}}" data-action="delete">Delete</button>
+                        </td>
+                    </tr>
+                    <tr id="ticket-details-{{ticketIdx}}" class="hidden">
+                        <td colspan="{{numHeaderFields}}">
+                            <div class="pl-4 border-l-4 border-blue-400">
+                                {{#detailFields}}
+                                    <b>Name:</b> {{name}}<br/>
+                                    <b>Email:</b> {{email}}<br/>
+                                    <b>Phone:</b> {{phone}}<br/>
+                                    <b>Department:</b> {{department}}<br/>
+                                    <b>Details:</b><br/>
+                                    <div class="px-4 whitespace-pre-wrap">{{details}}</div>
+                                {{/detailFields}}
+                            </div>
+                        </td>
+                    </tr>
+                    {{/ticketRows}}
+                    {{^user.tickets}}
+                    <tr><td class="bg-green-100 font-bold py-4 font-bold text-center" colspan="{{numHeaderFields}}">You have no tickets.</tr>
+                    {{/user.tickets}}
+                </tbody>
+            </table>
+            <form id="create-ticket" class="mt-6 bg-gray-100 rounded p-6">
+                <h1 class="font-bold text-2xl">Open A New Ticket</h1>
+                <div class="mt-2 flex flex-col">
+                    {{#ticketFields}}
+                    <label>
+                        <span class="text-lg font-bold capitalize">{{name}}</span>
+                        <input name="{{name}}" type="{{type}}" class="w-full px-4 py-2 rounded" required>
+                    </label>
+                    {{/ticketFields}}
+                    <label>
+                        <span class="text-lg font-bold capitalize">Department</span>
+                        <select name="department" class="w-full px-4 py-2 rounded" required>
+                            <option disabled>Select One...</option>
+                            {{#departments}}
+                                <option value="{{.}}">{{.}}</option>
+                            {{/departments}}
+                        </select>
+                    </label>
+                    <label>
+                        <span class="text-lg font-bold capitalize">Priority</span>
+                        <select name="priority" class="w-full px-4 py-2 rounded">
+                            {{#priorities}}
+                                <option value="{{.}}">{{.}}</option>
+                            {{/priorities}}
+                        </select>
+                    </label>
+                    <label>
+                        <span class="text-lg font-bold capitalize">Details</span>
+                        <textarea name="details" id="" cols="30" rows="5" class="w-full px-4 py-2 rounded"></textarea>
+                    </label>
+                    <input class="mt-4 bg-green-400 rounded font-bold p-4" type="submit" value="Create Ticket">
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <script>
+        const currentUserEmail = localStorage.getItem(LS_CURRENT_USER_EMAIL);
+        if (!currentUserEmail) {
+            window.location = '/auth.html';
+        }
+        renderHeader({loggedIn: true});
+        viewTickets(currentUserEmail);
+    </script>
+</body>
+</html>
